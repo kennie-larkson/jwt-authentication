@@ -19,22 +19,10 @@ app.get('/api',(req,res)=>{
 
 });
 
-app.post('/api/posts', verifyToken, (req,res)=>{
-    jwt.verify(req.token, secret, (err, authData) => {
-        if (err) {
-            //forbidden
-            res.sendStatus(403);
-        }else {
-            res.json({
-                message: "Post created ...",
-                authData
-            });
-        }
-    });
-});
 
-app.post('/api/login', (req,res)=>{
-    //Mock user
+app.post('/api/login', async (_req,res)=>{//err is prefixed with an under score because it was declared but not used
+    try {
+        //Mock user
     const payload = {
         id: 1,
         name: 'Kennie',
@@ -42,11 +30,35 @@ app.post('/api/login', (req,res)=>{
     };
 
     //Generates Token from the payload and secret data
-    jwt.sign({payload}, secret, { expiresIn: '30s'}, (err, token)=>{
+    jwt.sign({ payload }, secret, { expiresIn: '60s'}, (_err, token)=>{//err is prefixed with an under score because it was declared but not used
         res.json({
             token
         });
     });
+        
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+
+
+app.post('/api/posts', verifyToken, async (req,res)=>{
+    try {
+        jwt.verify(req.token, secret, (err, authData) => {
+            if (err) {
+                //forbidden
+                res.sendStatus(403);
+            }else {
+                res.json({
+                    message: "Post created ...",
+                    authData
+                });
+            }
+        });
+    } catch (err) {
+        console.error(err.message);
+    }
 });
 
 

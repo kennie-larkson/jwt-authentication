@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const verifyToken = (req,res, next)=>{
     //TOKEN FORMAT
     //Authorization: Bearer <access_token>
-    // try {
+    try {
         //Get the auth header value
     const bearerHeader = req.headers['authorization'];
 
@@ -25,10 +25,10 @@ const verifyToken = (req,res, next)=>{
     }
     
         
-    // } catch (err) {
-    //     console.error(err.message);
+    } catch (err) {
+        console.error(err.message);
         
-    // }
+    }
 
 }
 
